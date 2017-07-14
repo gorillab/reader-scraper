@@ -20,12 +20,12 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /healthCheck:
+  /health:
     get:
       tags:
       - "scraper"
       summary: "Ping to check scraper status"
-      operationId: "healthCheck"
+      operationId: "health"
       responses:
         200:
           description: "successful operation"
