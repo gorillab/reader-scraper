@@ -3,4 +3,4 @@ import * as Scraper from './ScraperService';
 
 export const fetch = MiddelwaresWrapper(Scraper.fetch);
 
-export const healthCheck = MiddelwaresWrapper(Scraper.healthCheck);
+export const health = MiddelwaresWrapper(Scraper.health);

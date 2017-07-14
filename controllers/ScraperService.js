@@ -11,7 +11,7 @@ export const fetch = (req, res) => {
   }
 };
 
-export const healthCheck = (req, res) => {
+export const health = (req, res) => {
   const examples = {};
   examples['application/json'] = {
     message: 'aeiou',

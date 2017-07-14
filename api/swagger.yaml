@@ -21,12 +21,12 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /healthCheck:
+  /health:
     get:
       tags:
       - "scraper"
       summary: "Ping to check scraper status"
-      operationId: "healthCheck"
+      operationId: "health"
       parameters: []
       responses:
         200:
@@ -68,4 +68,3 @@ definitions:
     properties:
       message:
         type: "string"
-
