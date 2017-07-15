@@ -18,10 +18,10 @@
   "scripts": {
     "clean": "rimraf dist",
     "lint": "eslint . --ignore-path .gitignore",
-    "start": "nodemon index.js --exec \"yarn lint && babel-node\"",
-    "mock": "NODE_ENV=mock nodemon index.js --exec babel-node",
+    "start": "nodemon index.js --ignore /scraper.json --exec \"yarn lint && babel-node\"",
+    "mock": "NODE_ENV=mock nodemon index.js --ignore /scraper.json --exec babel-node",
     "prebuild": "yarn run clean && yarn lint",
-    "build": "babel . --out-dir dist --ignore node_modules,dist,package.json,README.md,yarn.lock --copy-files --minified",
+    "build": "babel . --out-dir dist --ignore node_modules,dist,package.json,scraper.json,README.md,yarn.lock --copy-files --minified",
     "serve": "node dist"
   },
   "dependencies": {
@@ -45,6 +45,8 @@
     "morgan": "^1.8.2",
     "passport": "0.3.2",
     "passport-facebook": "^2.1.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
     "swagger-tools": "0.10.1"
   },
   "devDependencies": {
