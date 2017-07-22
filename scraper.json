@@ -1,0 +1,11 @@
+{
+  "id": "5969d91dc71ffe159da2b9cb",
+  "name": "Medium Scraper",
+  "apiUrl": "http://localhost:3002/v1",
+  "frequency": "0 0 0 * * *",
+  "source": {
+    "id": "5969d91dc71ffe159da2b9ca",
+    "title": "Medium",
+    "url": "https://medium.com"
+  }
+}
