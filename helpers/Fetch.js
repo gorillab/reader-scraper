@@ -1,28 +1,33 @@
-import Rp from 'request-promise';
 import Moment from 'moment';
+import Fetch from 'node-fetch';
 import { URL } from 'url';
 
 import upload from './Upload';
 
 const fetch = async () => {
-  const d = new Date();
-  const twoDateAgo = Moment(new Date(d.setDate(d.getDate() - 2))).format('YYYY-MM-DD');
-  const options = {
-    uri: 'https://api.github.com/search/repositories',
-    qs: {
-      access_token: 'bfc2d61a4403d00459224731a23c93ded483527e',
+  try {
+    const d = new Date();
+    const twoDateAgo = Moment(new Date(d.setDate(d.getDate() - 2))).format('YYYY-MM-DD');
+
+    const params = {
+      access_token: 'a538daf7104fd88118501cee739e412878dd9be2',
       q: `language:javascript created:>${twoDateAgo}`,
       sort: 'stars',
       order: 'desc',
-    },
-    headers: {
-      'User-Agent': 'Request-Promise',
-    },
-    json: true,
-  };
+    };
 
-  try {
-    const result = await Rp(options);
+    const query = Object.keys(params)
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+      .join('&');
+    const response = await Fetch(`https://api.github.com/search/repositories?${query}`, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Request-Promise',
+      },
+    });
+
+    const result = await response.json();
+
     if (result.total_count > 0) {
       const items = result.total_count > process.env.FETCH_LIMIT
         ? result.items.slice(0, process.env.FETCH_LIMIT) : result.items;

@@ -48,8 +48,6 @@
     "node-fetch": "^1.7.1",
     "passport": "0.3.2",
     "passport-facebook": "^2.1.1",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1",
     "restler": "^3.4.0",
     "swagger-tools": "0.10.1",
     "x-ray": "^2.3.2"

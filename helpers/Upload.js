@@ -1,15 +1,15 @@
-import Rp from 'request-promise';
+import Fetch from 'node-fetch';
 
 const upload = async (posts) => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.SCRAPER_ADMIN_URL}/upload`,
-    body: posts,
-    json: true,
-  };
-
   try {
-    await Rp(options);
+    await Fetch(`${process.env.SCRAPER_ADMIN_URL}/upload`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(posts),
+    });
     console.log('Upload successfully!');
   } catch (err) {
     console.log(err);
