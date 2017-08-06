@@ -9,7 +9,7 @@ import BodyParser from 'body-parser';
 import Cors from 'cors';
 import Helmet from 'helmet';
 import HttpStatus from 'http-status';
-import Rp from 'request-promise';
+import Fetch from 'node-fetch';
 import { config } from 'dotenv';
 
 import APIError from './helpers/APIError';
@@ -21,14 +21,15 @@ config();
   // register scraper
   try {
     const scraper = JSON.parse(Fs.readFileSync('./scraper.json', 'utf8'));
-    const options = {
-      method: 'POST',
-      uri: `${process.env.SCRAPER_ADMIN_URL}/register`,
-      body: scraper,
-      json: true,
-    };
 
-    const res = await Rp(options);
+    const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(scraper),
+    });
     if (!scraper.id || !scraper.source.id) {
       Fs.writeFileSync('./scraper.json', JSON.stringify(res));
     }
