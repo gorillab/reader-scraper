@@ -22,7 +22,7 @@ config();
   // register scraper
   try {
     const scraper = JSON.parse(Fs.readFileSync('./scraper.json', 'utf8'));
-
+    scraper.apiUrl = process.env.API_URL;
     const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
       headers: {
         'Content-Type': 'application/json',
@@ -31,8 +31,16 @@ config();
       method: 'POST',
       body: JSON.stringify(scraper),
     });
+
+    if (res.status !== 200) {
+      console.log('Register scraper failed!');
+      process.exit(1);
+    }
+
+    const data = await res.json();
+
     if (!scraper.id || !scraper.source.id) {
-      Fs.writeFileSync('./scraper.json', JSON.stringify(res));
+      Fs.writeFileSync('./scraper.json', JSON.stringify(data));
     }
   } catch (err) {
     console.log('Register scraper failed!');
