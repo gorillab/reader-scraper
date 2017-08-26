@@ -14,7 +14,5 @@ export const fetch = async (req, res) => {
 };
 
 export const health = (req, res) => {
-  res.json({
-    message: 'Done',
-  });
+  res.send('OK');
 };

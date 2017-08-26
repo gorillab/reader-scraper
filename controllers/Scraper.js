@@ -8,7 +8,5 @@ export const fetch = process.env.NODE_ENV === 'mock' ? (req, res) => {
 } : MiddelwaresWrapper(Scraper.fetch);
 
 export const health = process.env.NODE_ENV === 'mock' ? (req, res) => {
-  res.json({
-    message: 'Done',
-  });
+  res.send('OK');
 } : MiddelwaresWrapper(Scraper.health);

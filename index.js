@@ -11,6 +11,7 @@ import Helmet from 'helmet';
 import HttpStatus from 'http-status';
 import Fetch from 'node-fetch';
 import { config } from 'dotenv';
+import Health from 'gorillab-health';
 
 import APIError from './helpers/APIError';
 
@@ -42,6 +43,8 @@ config();
   SwaggerTools.initializeMiddleware(Jsyaml.safeLoad(Fs.readFileSync(Path.join(__dirname, '/api/swagger.yaml'), 'utf8')), (middleware) => {
     // Init the server
     const app = Express();
+    // Use gorillab health check
+    app.use(Health());
     app.use(Logger('common'));
     app.use(BodyParser.json({ limit: '1mb' }));
     app.use(BodyParser.urlencoded({ extended: true }));
