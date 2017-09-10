@@ -18,10 +18,13 @@ import APIError from './helpers/APIError';
 // Load .env
 config();
 
-(async () => {
-  // register scraper
+export const init = (scraperConfig) => {
+  global.scraperConfig = scraperConfig;
+};
+
+export const start = async () => {
   try {
-    const scraper = JSON.parse(Fs.readFileSync('./scraper.json', 'utf8'));
+    const scraper = JSON.parse(Fs.readFileSync(`${process.env.PWD}/scraper.json`, 'utf8'));
     scraper.apiUrl = process.env.API_URL;
     const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
       headers: {
@@ -40,7 +43,7 @@ config();
     const data = await res.json();
 
     if (!scraper.id || !scraper.source.id) {
-      Fs.writeFileSync('./scraper.json', JSON.stringify(data));
+      Fs.writeFileSync(`${process.env.PWD}/scraper.json`, JSON.stringify(data));
     }
   } catch (err) {
     console.log('Register scraper failed!');
@@ -82,4 +85,4 @@ config();
       console.log(`Swagger-ui is available at http://${process.env.HOST}:${process.env.PORT}/docs`);  // eslint-disable-line no-console
     });
   });
-})();
+};
