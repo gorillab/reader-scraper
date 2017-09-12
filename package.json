@@ -51,6 +51,7 @@
     "passport-facebook": "^2.1.1",
     "restler": "^3.4.0",
     "swagger-tools": "0.10.1",
+    "validate.js": "^0.11.1",
     "x-ray": "^2.3.2"
   },
   "devDependencies": {

@@ -12,13 +12,49 @@ import HttpStatus from 'http-status';
 import Fetch from 'node-fetch';
 import { config } from 'dotenv';
 import Health from 'gorillab-health';
+import Validator from 'validate.js';
 
 import APIError from './helpers/APIError';
 
 // Load .env
 config();
 
+Validator.validators.func = (value, options) => {
+  if (options) {
+    return Validator.isFunction(value) ? undefined : 'is not a valid function';
+  }
+  return undefined;
+};
+
+Validator.validators.obj = (value, options) => {
+  if (options) {
+    return Validator.isObject(value) ? undefined : 'is not a valid object';
+  }
+  return undefined;
+};
+
 export const init = (scraperConfig) => {
+  const validate = Validator(scraperConfig, {
+    url: {
+      presence: true,
+      url: true,
+    },
+    map: {
+      presence: true,
+      func: true,
+    },
+    options: {
+      presence: true,
+      obj: true,
+    },
+  });
+
+  if (validate) {
+    console.log('@Scraper validate failed!');
+    console.log(validate);
+    process.exit(1);
+  }
+
   global.scraperConfig = scraperConfig;
 };
 
