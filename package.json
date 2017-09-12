@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gorillab/reader-scraper-admin.git"
+    "url": "https://github.com/gorillab/reader-scraper.git"
   },
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "start": "nodemon index.js --ignore /scraper.json --exec \"yarn lint && babel-node\"",
     "mock": "NODE_ENV=mock nodemon index.js --ignore /scraper.json --exec babel-node",
     "prebuild": "yarn run clean && yarn lint",
-    "build": "babel . --out-dir dist --ignore node_modules,dist,package.json,scraper.json,README.md,yarn.lock --copy-files --minified",
+    "build": "babel . --out-dir dist --ignore node_modules,dist,scraper.json,README.md,yarn.lock --copy-files --minified",
     "serve": "node dist"
   },
   "dependencies": {
@@ -51,6 +51,7 @@
     "passport-facebook": "^2.1.1",
     "restler": "^3.4.0",
     "swagger-tools": "0.10.1",
+    "validate.js": "^0.11.1",
     "x-ray": "^2.3.2"
   },
   "devDependencies": {

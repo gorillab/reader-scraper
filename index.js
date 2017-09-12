@@ -12,16 +12,55 @@ import HttpStatus from 'http-status';
 import Fetch from 'node-fetch';
 import { config } from 'dotenv';
 import Health from 'gorillab-health';
+import Validator from 'validate.js';
 
 import APIError from './helpers/APIError';
 
 // Load .env
 config();
 
-(async () => {
-  // register scraper
+Validator.validators.func = (value, options) => {
+  if (options) {
+    return Validator.isFunction(value) ? undefined : 'is not a valid function';
+  }
+  return undefined;
+};
+
+Validator.validators.obj = (value, options) => {
+  if (options) {
+    return Validator.isObject(value) ? undefined : 'is not a valid object';
+  }
+  return undefined;
+};
+
+export const init = (scraperConfig) => {
+  const validate = Validator(scraperConfig, {
+    url: {
+      presence: true,
+      url: true,
+    },
+    map: {
+      presence: true,
+      func: true,
+    },
+    options: {
+      presence: true,
+      obj: true,
+    },
+  });
+
+  if (validate) {
+    console.log('@Scraper validate failed!');
+    console.log(validate);
+    process.exit(1);
+  }
+
+  global.scraperConfig = scraperConfig;
+};
+
+export const start = async () => {
   try {
-    const scraper = JSON.parse(Fs.readFileSync('./scraper.json', 'utf8'));
+    const scraper = JSON.parse(Fs.readFileSync(`${process.env.PWD}/scraper.json`, 'utf8'));
     scraper.apiUrl = process.env.API_URL;
     const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
       headers: {
@@ -40,7 +79,7 @@ config();
     const data = await res.json();
 
     if (!scraper.id || !scraper.source.id) {
-      Fs.writeFileSync('./scraper.json', JSON.stringify(data));
+      Fs.writeFileSync(`${process.env.PWD}/scraper.json`, JSON.stringify(data));
     }
   } catch (err) {
     console.log('Register scraper failed!');
@@ -82,4 +121,4 @@ config();
       console.log(`Swagger-ui is available at http://${process.env.HOST}:${process.env.PORT}/docs`);  // eslint-disable-line no-console
     });
   });
-})();
+};
