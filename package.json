@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/gorillab/reader-scraper.git"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
     "lint": "eslint . --ignore-path .gitignore",
