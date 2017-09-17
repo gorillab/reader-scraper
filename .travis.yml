@@ -5,16 +5,26 @@ node_js:
   - 7
   - 8
 
+install:
+  - yarn
+
+cache:
+  yarn: true
+  directories:
+  - node_modules
+
+script:
+  - yarn build
+
 deploy:
-  - provider: npm
-    email: "hello@gorillab.co"
-    api_key: $NPM_AUTH_TOKEN
-    skip_cleanup: true
-    on:
-      tags: next
-      node: '8'
-    run:
-      - yarn build
+  provider: npm
+  email: "hello@gorillab.co"
+  api_key: $NPM_AUTH_TOKEN
+  skip_cleanup: true
+  on:
+    tags: true
+    node: '8'
+  tag: $TRAVIS_TAG
 
 notifications:
   email: false
