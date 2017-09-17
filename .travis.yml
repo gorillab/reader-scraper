@@ -5,6 +5,17 @@ node_js:
   - 7
   - 8
 
+deploy:
+  - provider: npm
+    email: "hello@gorillab.co"
+    api_key: $NPM_AUTH_TOKEN
+    skip_cleanup: true
+    on:
+      tags: next
+      node: '8'
+    run:
+      - yarn build
+
 notifications:
   email: false
   slack:
