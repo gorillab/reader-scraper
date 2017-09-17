@@ -18,4 +18,5 @@ npm-debug.log
 .swagger-codegen-ignore
 .travis.yml
 nodemon.json
+scraper.json.example
 yarn.lock
