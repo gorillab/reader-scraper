@@ -1,14 +1,13 @@
-import Fs from 'fs';
 import Fetch from 'node-fetch';
 
 const upload = async (posts) => {
-  const scraper = JSON.parse(Fs.readFileSync(`${process.env.PWD}/scraper.json`, 'utf8'));
-  if (scraper.id) {
+  const scraperUrl = process.env.SCRAPER_API_URL;
+  if (scraperUrl) {
     try {
       await Fetch(`${process.env.SCRAPER_ADMIN_URL}/upload`, {
         headers: {
           'Content-Type': 'application/json',
-          'scraper-id': scraper.id,
+          'scraper-api-url': scraperUrl,
         },
         method: 'POST',
         body: JSON.stringify(posts),
