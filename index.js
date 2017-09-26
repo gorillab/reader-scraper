@@ -57,8 +57,12 @@ export const init = (scraperConfig) => {
 
 export const start = async () => {
   try {
-    const scraper = JSON.parse(Fs.readFileSync(`${process.env.PWD}/scraper.json`, 'utf8'));
-    scraper.apiUrl = process.env.API_URL;
+    const scraper = {
+      name: process.env.SCRAPER_NAME,
+      apiUrl: process.env.SCRAPER_API_URL,
+      frequency: process.env.SCRAPER_FREQUENCY,
+      source: process.env.SCRAPER_SOURCE,
+    };
     const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
       headers: {
         'Content-Type': 'application/json',
@@ -72,12 +76,6 @@ export const start = async () => {
       // eslint-disable-next-line no-console
       console.log('Register scraper failed!');
       process.exit(1);
-    }
-
-    const data = await res.json();
-
-    if (!scraper.id || !scraper.source.id) {
-      Fs.writeFileSync(`${process.env.PWD}/scraper.json`, JSON.stringify(data));
     }
   } catch (err) {
     // eslint-disable-next-line no-console
