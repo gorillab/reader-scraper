@@ -5,9 +5,6 @@ import SwaggerTools from 'swagger-tools';
 import Jsyaml from 'js-yaml';
 import Express from 'express';
 import Logger from 'morgan';
-import BodyParser from 'body-parser';
-import Cors from 'cors';
-import Helmet from 'helmet';
 import HttpStatus from 'http-status';
 import Fetch from 'node-fetch';
 import { config } from 'dotenv';
@@ -50,8 +47,8 @@ export const init = (scraperConfig) => {
   });
 
   if (validate) {
-    console.log('@Scraper validate failed!');
-    console.log(validate);
+    // eslint-disable-next-line no-console
+    console.log('@Scraper validate failed!', validate);
     process.exit(1);
   }
 
@@ -72,6 +69,7 @@ export const start = async () => {
     });
 
     if (res.status !== 200) {
+      // eslint-disable-next-line no-console
       console.log('Register scraper failed!');
       process.exit(1);
     }
@@ -82,6 +80,7 @@ export const start = async () => {
       Fs.writeFileSync(`${process.env.PWD}/scraper.json`, JSON.stringify(data));
     }
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log('Register scraper failed!');
     process.exit(1);
   }
@@ -93,10 +92,6 @@ export const start = async () => {
     // Use gorillab health check
     app.use(Health());
     app.use(Logger('common'));
-    app.use(BodyParser.json({ limit: '1mb' }));
-    app.use(BodyParser.urlencoded({ extended: true }));
-    app.use(Cors());
-    app.use(Helmet());
     app.use(middleware.swaggerMetadata());                        // Interpret Swagger resources
     app.use(middleware.swaggerValidator());                       // Validate Swagger requests
     app.use(middleware.swaggerRouter({                            // Route validated requests
