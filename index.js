@@ -13,13 +13,13 @@ import Validator from 'validate.js';
 
 import APIError from './helpers/APIError';
 
-// Load .env
 config();
 
 Validator.validators.func = (value, options) => {
   if (options) {
     return Validator.isFunction(value) ? undefined : 'is not a valid function';
   }
+
   return undefined;
 };
 
@@ -27,10 +27,11 @@ Validator.validators.obj = (value, options) => {
   if (options) {
     return Validator.isObject(value) ? undefined : 'is not a valid object';
   }
+
   return undefined;
 };
 
-export const init = (scraperConfig) => {
+const init = (scraperConfig) => {
   const validate = Validator(scraperConfig, {
     url: {
       presence: true,
@@ -48,21 +49,21 @@ export const init = (scraperConfig) => {
 
   if (validate) {
     // eslint-disable-next-line no-console
-    console.log('@Scraper validate failed!', validate);
+    console.log('Scraper failed to init', validate);
     process.exit(1);
   }
 
   global.scraperConfig = scraperConfig;
 };
 
-export const start = async () => {
+const start = async () => {
   try {
     const scraper = {
       name: process.env.SCRAPER_NAME,
-      apiUrl: process.env.SCRAPER_API_URL,
       frequency: process.env.SCRAPER_FREQUENCY,
       source: process.env.SCRAPER_SOURCE,
     };
+
     const res = await Fetch(`${process.env.SCRAPER_ADMIN_URL}/register`, {
       headers: {
         'Content-Type': 'application/json',
@@ -71,15 +72,14 @@ export const start = async () => {
       method: 'POST',
       body: JSON.stringify(scraper),
     });
+    const json = res.json();
 
-    if (res.status !== 200) {
-      // eslint-disable-next-line no-console
-      console.log('Register scraper failed!');
-      process.exit(1);
+    if (!json.ok) {
+      throw new Error(json);
     }
-  } catch (err) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('Register scraper failed!');
+    console.log('Scraper failed to start', error);
     process.exit(1);
   }
 
@@ -87,7 +87,7 @@ export const start = async () => {
   SwaggerTools.initializeMiddleware(Jsyaml.safeLoad(Fs.readFileSync(Path.join(__dirname, '/api/swagger.yaml'), 'utf8')), (middleware) => {
     // Init the server
     const app = Express();
-    // Use gorillab health check
+
     app.use(Health());
     app.use(Logger('common'));
     app.use(middleware.swaggerMetadata());                        // Interpret Swagger resources
@@ -100,7 +100,8 @@ export const start = async () => {
     app.use(middleware.swaggerUi());                              // Swagger UI
     app.use((req, res, next) => next(new APIError('API not found', HttpStatus.NOT_FOUND)));
     app.use((err, req, res, next) => {                            // eslint-disable-line
-      console.log(err.stack);                                     // eslint-disable-line no-console
+      // eslint-disable-next-line no-console
+      console.log(err.stack);
       const errorResponse = {
         message: err.isPublic ? err.message : HttpStatus[err.status],
         stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
@@ -110,8 +111,15 @@ export const start = async () => {
 
     // Start the server
     Http.createServer(app).listen(process.env.PORT, process.env.HOST, () => {
-      console.log(`Your server is running at http://${process.env.HOST}:${process.env.PORT}`);        // eslint-disable-line no-console
-      console.log(`Swagger-ui is available at http://${process.env.HOST}:${process.env.PORT}/docs`);  // eslint-disable-line no-console
+      // eslint-disable-next-line no-console
+      console.log(`Your server is running at http://${process.env.HOST}:${process.env.PORT}`);
+      // eslint-disable-next-line no-console
+      console.log(`Swagger-ui is available at http://${process.env.HOST}:${process.env.PORT}/docs`);
     });
   });
+};
+
+export {
+  init,
+  start,
 };

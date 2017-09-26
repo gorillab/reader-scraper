@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "Reader base scraper"
-  version: "1.0.0"
+  version: "1.0.2"
   title: "Reader Scraper"
   contact:
     name: "Gorillab"
@@ -21,21 +21,6 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /health:
-    get:
-      tags:
-      - "scraper"
-      summary: "Ping to check scraper status"
-      operationId: "health"
-      parameters: []
-      responses:
-        200:
-          description: "successful operation"
-        default:
-          description: "error operation"
-          schema:
-            $ref: "#/definitions/Error"
-      x-swagger-router-controller: "Scraper"
   /fetch:
     get:
       tags:

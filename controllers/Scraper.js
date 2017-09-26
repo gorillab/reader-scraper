@@ -1,12 +1,13 @@
 import MiddelwaresWrapper from '../helpers/RouteMiddlewaresWrapper';
 import * as Scraper from './ScraperService';
 
-export const fetch = process.env.NODE_ENV === 'mock' ? (req, res) => {
+const fetch = process.env.NODE_ENV === 'mock' ? (req, res) => {
   res.json({
     message: 'Done',
   });
 } : MiddelwaresWrapper(Scraper.fetch);
 
-export const health = process.env.NODE_ENV === 'mock' ? (req, res) => {
-  res.send('OK');
-} : MiddelwaresWrapper(Scraper.health);
+export {
+  // eslint-disable-next-line import/prefer-default-export
+  fetch,
+};
