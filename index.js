@@ -60,6 +60,8 @@ const start = async () => {
   try {
     const scraper = {
       name: process.env.SCRAPER_NAME,
+      baseUrl: process.env.SCRAPER_BASE_URL,
+      version: process.env.SCRAPER_VERSION,
       frequency: process.env.SCRAPER_FREQUENCY,
       source: process.env.SCRAPER_SOURCE,
     };
