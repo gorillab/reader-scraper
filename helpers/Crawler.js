@@ -14,6 +14,7 @@ const crawler = () => {
   }])
   .limit(process.env.FETCH_LIMIT)((err, result) => {
     if (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     } else {
       const posts = result.map(({ title, description, url, image }) => {

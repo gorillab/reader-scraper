@@ -13,8 +13,10 @@ const upload = async (posts) => {
         method: 'POST',
         body: JSON.stringify(posts),
       });
+      // eslint-disable-next-line no-console
       console.log('Upload successfully!');
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   }
