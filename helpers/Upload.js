@@ -5,7 +5,7 @@ const upload = async (posts) => {
     await Fetch(`${process.env.SCRAPER_ADMIN_URL}/upload`, {
       headers: {
         'Content-Type': 'application/json',
-        'scraper-base-url': process.env.SCRAPER_BASE_URL,
+        'scraper-base-url': `${process.env.SCRAPER_BASE_URL}/${process.env.SCRAPER_VERSION}`,
       },
       method: 'POST',
       body: JSON.stringify(posts),
