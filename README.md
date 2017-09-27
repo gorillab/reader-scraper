@@ -16,5 +16,5 @@ yarn add @gorillab/reader-scraper
 or using `npm`
 
 ```
-yarn install --save @gorillab/reader-scraper
+npm install --save @gorillab/reader-scraper
 ```
