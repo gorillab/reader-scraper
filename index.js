@@ -74,7 +74,7 @@ const start = async () => {
       method: 'POST',
       body: JSON.stringify(scraper),
     });
-    if (res.status !== 200) {
+    if (!res.ok) {
       const error = await res.json();
       throw new Error(error);
     }
