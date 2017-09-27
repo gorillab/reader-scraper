@@ -74,9 +74,9 @@ const start = async () => {
       method: 'POST',
       body: JSON.stringify(scraper),
     });
-    const json = await res.json();
-    if (!json.ok) {
-      throw new Error(json);
+    if (res.status !== 200) {
+      const error = await res.json();
+      throw new Error(error);
     }
   } catch (error) {
     // eslint-disable-next-line no-console
