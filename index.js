@@ -32,7 +32,7 @@ Validator.validators.obj = (value, options) => {
 };
 
 const init = (scraperConfig) => {
-  const validate = Validator(scraperConfig, {
+  const validate = process.env.SCRAPER_TYPE === 'api' ? Validator(scraperConfig, {
     url: {
       presence: true,
       url: true,
@@ -44,6 +44,20 @@ const init = (scraperConfig) => {
     options: {
       presence: true,
       obj: true,
+    },
+  }) : Validator(scraperConfig, {
+    url: {
+      presence: true,
+    },
+    scope: {
+      presence: true,
+    },
+    selector: {
+      presence: true,
+    },
+    map: {
+      presence: true,
+      func: true,
     },
   });
 

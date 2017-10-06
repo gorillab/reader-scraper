@@ -1,7 +1,12 @@
 import fetchData from '../helpers/Fetch';
+import crawlerData from './../helpers/Crawler';
 
 const fetch = async (req, res) => {
-  fetchData();
+  if (process.env.SCRAPER_TYPE === 'api') {
+    fetchData();
+  } else {
+    crawlerData();
+  }
 
   res.json({
     message: 'Done',
