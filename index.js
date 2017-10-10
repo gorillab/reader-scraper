@@ -90,7 +90,7 @@ const start = async () => {
     });
     if (!res.ok) {
       const error = await res.json();
-      throw new Error(error);
+      throw new Error(error.message);
     }
   } catch (error) {
     // eslint-disable-next-line no-console
