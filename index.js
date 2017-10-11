@@ -32,7 +32,7 @@ Validator.validators.obj = (value, options) => {
 };
 
 const init = (scraperConfig) => {
-  const validate = Validator(scraperConfig, {
+  const validate = process.env.SCRAPER_TYPE === 'api' ? Validator(scraperConfig, {
     url: {
       presence: true,
       url: true,
@@ -44,6 +44,21 @@ const init = (scraperConfig) => {
     options: {
       presence: true,
       obj: true,
+    },
+  }) : Validator(scraperConfig, {
+    url: {
+      presence: true,
+      url: true,
+    },
+    scope: {
+      presence: true,
+    },
+    selector: {
+      presence: true,
+    },
+    map: {
+      presence: true,
+      func: true,
     },
   });
 
@@ -76,7 +91,7 @@ const start = async () => {
     });
     if (!res.ok) {
       const error = await res.json();
-      throw new Error(error);
+      throw new Error(error.message);
     }
   } catch (error) {
     // eslint-disable-next-line no-console
