@@ -3,7 +3,7 @@ import upload from './Upload';
 
 const x = Xray();
 
-const crawler = () => {
+const crawl = () => {
   x(global.scraperConfig.url, global.scraperConfig.scope, [global.scraperConfig.selector])(
     (err, result) => {
       if (err) {
@@ -17,4 +17,4 @@ const crawler = () => {
     });
 };
 
-export default crawler;
+export default crawl;

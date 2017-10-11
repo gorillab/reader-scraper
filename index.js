@@ -48,6 +48,7 @@ const init = (scraperConfig) => {
   }) : Validator(scraperConfig, {
     url: {
       presence: true,
+      url: true,
     },
     scope: {
       presence: true,
