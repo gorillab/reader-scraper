@@ -1,63 +1,41 @@
 {
-  "name": "@gorillab/reader-scraper",
-  "version": "1.1.0",
-  "description": "Reader base scraper",
+  "name": "Cron",
+  "description": "Cron description",
+  "version": "1.0.0",
   "author": {
     "name": "Gorillab",
     "email": "hello@gorillab.co",
     "url": "https://gorillab.co/"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "main": "src/index.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=9"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gorillab/reader-scraper.git"
+    "url": ""
   },
-  "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf dist",
     "lint": "eslint . --ignore-path .gitignore",
-    "crawler": "nodemon xray.js",
-    "start": "nodemon index.js --exec \"yarn lint && babel-node\"",
-    "mock": "NODE_ENV=mock nodemon index.js --exec babel-node",
-    "prebuild": "yarn run clean && yarn lint",
-    "build": "babel . --out-dir dist --ignore node_modules,dist,package.json,README.md,scraper.json.example,yarn.lock --copy-files --minified",
-    "serve": "node dist"
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js"
   },
   "dependencies": {
-    "async": "^2.5.0",
-    "babel-runtime": "^6.26.0",
     "dotenv": "^4.0.0",
-    "express": "^4.15.3",
-    "gorillab-health": "^1.0.1",
-    "http-status": "^1.0.1",
-    "include-all": "^4.0.3",
-    "js-yaml": "^3.3.0",
-    "lodash": "^4.17.4",
-    "moment": "^2.18.1",
-    "morgan": "^1.8.2",
-    "node-fetch": "^1.7.1",
-    "swagger-tools": "0.10.1",
-    "validate.js": "^0.11.1",
-    "x-ray": "^2.3.2"
+    "mongoose": "4.6.5",
+    "mongoose-deep-populate": "^3.0.0",
+    "mongoose-unique-validator": "1.0.2",
+    "node-fetch": "^1.7.3",
+    "cron": "^1.2.1"
   },
+  "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.25.0",
-    "babel-plugin-transform-regenerator": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-airbnb": "^2.4.0",
     "eslint": "3.19.0",
     "eslint-config-airbnb": "15.0.1",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "5.0.1",
     "eslint-plugin-react": "7.1.0",
-    "nodemon": "^1.11.0",
-    "rimraf": "^2.6.1"
+    "nodemon": "^1.14.6"
   },
   "eslintConfig": {
     "env": {
@@ -75,7 +53,7 @@
         }
       ],
       "no-param-reassign": [
-        2,
+        1,
         {
           "props": false
         }
@@ -83,16 +61,15 @@
       "func-names": [
         "error",
         "never"
-      ]
+      ],
+      "no-await-in-loop": 0,
+      "no-restricted-syntax": [
+        "error",
+        "WithStatement",
+        "BinaryExpression[operator='in']"
+      ],
+      "linebreak-style": 0,
+      "no-else-return": 0
     }
-  },
-  "babel": {
-    "presets": [
-      "airbnb"
-    ],
-    "plugins": [
-      "transform-runtime",
-      "transform-regenerator"
-    ]
   }
 }
