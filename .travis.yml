@@ -1,30 +1,33 @@
+sudo: required
+
 language: node_js
 
 node_js:
-  - 6
-  - 7
-  - 8
+  - 9
 
-install:
-  - yarn
+env:
+- DOCKER_REPO=gorillab/reader-scraper
+
+jobs:
+  include:
+  - stage: test
+    install:
+    - yarn
+    script:
+    - yarn test
+  - stage: build
+    services:
+    - docker
+    script:
+    - docker build -t "$DOCKER_REPO" .
+    - if [ ! -z "$TRAVIS_TAG" ]; then docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+      for TAG in {"$TRAVIS_TAG",latest}; do docker tag "$DOCKER_REPO" "$DOCKER_REPO":"$TAG";
+      docker push "$DOCKER_REPO":"$TAG"; done fi
 
 cache:
   yarn: true
   directories:
   - node_modules
-
-script:
-  - yarn build
-
-deploy:
-  provider: npm
-  email: "hello@gorillab.co"
-  api_key: $NPM_AUTH_TOKEN
-  skip_cleanup: true
-  on:
-    node: '8'
-    branch: master
-    tags: true
 
 notifications:
   email: false
