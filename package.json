@@ -1,6 +1,6 @@
 {
-  "name": "Cron",
-  "description": "Cron description",
+  "name": "reader-scraper",
+  "description": "Reader scraper cronjob",
   "version": "1.0.0",
   "author": {
     "name": "Gorillab",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/gorillab/reader-scraper"
   },
   "scripts": {
-    "lint": "eslint . --ignore-path .gitignore",
-    "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "test": "eslint . --ignore-path .gitignore",
+    "start": "nodemon src",
+    "serve": "node src"
   },
   "dependencies": {
     "dotenv": "^4.0.0",

@@ -6,7 +6,7 @@ const Mongoose = require('./db/mongoose');
 const { loadSourceJobs } = require('./helpers/scraper-cron');
 
 Mongoose.connection.on('connected', () => {
-  console.log('cron service is running...');
+  console.log('Cron service is running...');
   new CronJob(process.env.MAIN_CRON, async () => { // eslint-disable-line
     loadSourceJobs();
   }, null, true, 'Asia/Ho_Chi_Minh');
