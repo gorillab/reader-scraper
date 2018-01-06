@@ -63,7 +63,7 @@ const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
   const sourceId = _id.toString();
 
   sourceJobs.set(sourceId, new CronJob(frequency, async () => { // eslint-disable-line
-    fetchPosts({
+    await fetchPosts({
       sourceId,
       sourceUrl,
     });
