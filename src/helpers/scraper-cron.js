@@ -24,7 +24,8 @@ const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
 
   sourceJobs.set(sourceId, new CronJob(frequency, async () => { // eslint-disable-line
     try {
-      const posts = await (await Fetch(sourceUrl)).json();
+      const res = await Fetch(sourceUrl);
+      const posts = await res.json();
 
       for (const { content, title = content, image, url } of posts) {
         if (title) {
@@ -73,9 +74,9 @@ const loadSourceJobs = async () => {
     query,
   });
 
-  sources.forEach((source) => {
-    addSourceJob(source);
-  });
+  for (const source of sources) {
+    await addSourceJob(source);
+  }
 };
 
 module.exports = {
