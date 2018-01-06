@@ -16,7 +16,7 @@
     "url": "https://github.com/gorillab/reader-scraper"
   },
   "scripts": {
-    "lint": "eslint . --ignore-path .gitignore",
+    "test": "eslint . --ignore-path .gitignore",
     "start": "nodemon src",
     "serve": "node src"
   },
