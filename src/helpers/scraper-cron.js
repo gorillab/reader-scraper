@@ -16,44 +16,49 @@ const removeSourceJob = ({ _id }) => {
 };
 
 const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
+  removeSourceJob({
+    _id,
+  });
+
   const sourceId = _id.toString();
-  removeSourceJob(sourceId);
 
   sourceJobs.set(sourceId, new CronJob(frequency, async () => { // eslint-disable-line
+    try {
+      const posts = await (await Fetch(sourceUrl)).json();
 
-    const res = await Fetch(sourceUrl);
-    const posts = await res.json();
+      for (const { content, title = content, image, url } of posts) {
+        if (title) {
+          const postUrl = URL.parse(url) || {};
+          const {
+            hostname: host,
+            pathname: path,
+          } = postUrl;
 
-    for (const { content, title = content, image, url } of posts) {
-      if (title) {
-        const postUrl = URL.parse(url) || {};
-        const {
-          hostname: host,
-          pathname: path,
-        } = postUrl;
-
-        const post = await Post.findOne({
-          isDeleted: false,
-          host,
-          path,
-        });
-
-        if (!post) {
-          const newPost = new Post({
-            title,
-            content,
-            image,
-            url,
+          const post = await Post.findOne({
+            isDeleted: false,
             host,
             path,
-            source: sourceId,
           });
-          await newPost.createByUser();
-        } else {
-          post.created.at = new Date();
-          await post.updateByUser();
+
+          if (!post) {
+            const newPost = new Post({
+              title,
+              content,
+              image,
+              url,
+              host,
+              path,
+              source: sourceId,
+            });
+            await newPost.createByUser();
+          } else {
+            post.created.at = new Date();
+            await post.updateByUser();
+          }
         }
       }
+    } catch (err) {
+      console.log(err);
     }
   }, null, true, 'Asia/Ho_Chi_Minh'));
 };
