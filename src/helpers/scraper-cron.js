@@ -26,7 +26,7 @@ const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
     try {
       const posts = await (await Fetch(sourceUrl)).json();
 
-      for (const { content, title = content, image, url } of posts) {
+      for (const { content, title = content, image, url } of posts.reverse()) {
         if (title) {
           const postUrl = URL.parse(url) || {};
           const {
@@ -92,7 +92,7 @@ const loadSource = async () => {
     try {
       const posts = await (await Fetch(sourceUrl)).json();
 
-      for (const { content, title = content, image, url } of posts) {
+      for (const { content, title = content, image, url } of posts.reverse()) {
         if (title) {
           const postUrl = URL.parse(url) || {};
           const {
