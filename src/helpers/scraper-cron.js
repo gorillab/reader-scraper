@@ -73,9 +73,9 @@ const loadSourceJobs = async () => {
     query,
   });
 
-  sources.forEach((source) => {
-    addSourceJob(source);
-  });
+  for (const source of sources) {
+    await addSourceJob(source);
+  }
 };
 
 module.exports = {
