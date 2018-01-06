@@ -78,8 +78,60 @@ const loadSourceJobs = async () => {
   }
 };
 
+const loadSource = async () => {
+  const query = {
+    isDeleted: false,
+    isActive: true,
+  };
+
+  const sources = await Source.list({
+    query,
+  });
+
+  for (const { _id, url: sourceUrl } of sources) {
+    try {
+      const posts = await (await Fetch(sourceUrl)).json();
+
+      for (const { content, title = content, image, url } of posts) {
+        if (title) {
+          const postUrl = URL.parse(url) || {};
+          const {
+            hostname: host,
+            pathname: path,
+          } = postUrl;
+
+          const post = await Post.findOne({
+            isDeleted: false,
+            host,
+            path,
+          });
+
+          if (!post) {
+            const newPost = new Post({
+              title,
+              content,
+              image,
+              url,
+              host,
+              path,
+              source: _id,
+            });
+            await newPost.createByUser();
+          } else {
+            post.created.at = new Date();
+            await post.updateByUser();
+          }
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
 module.exports = {
   addSourceJob,
   removeSourceJob,
   loadSourceJobs,
+  loadSource,
 };
