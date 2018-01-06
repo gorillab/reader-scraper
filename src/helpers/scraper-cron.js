@@ -96,7 +96,7 @@ const loadSource = async () => {
   });
 
   for (const { _id: sourceId, url: sourceUrl } of sources) {
-    fetchPosts({
+    await fetchPosts({
       sourceId,
       sourceUrl,
     });
