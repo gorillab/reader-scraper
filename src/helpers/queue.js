@@ -5,12 +5,9 @@ class Queue {
   }
 
   async addFunction(callback) {
-    const that = this;
     this.queue.push(async () => {
-      const finished = await callback();
-      if (typeof finished === 'undefined' || finished) {
-        that.next();
-      }
+      await callback();
+      this.next();
     });
 
     if (!this.running) {
