@@ -1,11 +1,13 @@
 const Fetch = require('node-fetch');
+const URL = require('url');
 const { CronJob } = require('cron');
 
-const Source = require('./../source.model.js');
-const Post = require('./../post.model.js');
-const URL = require('url');
+const Source = require('./../source.model');
+const Post = require('./../post.model');
+const Queue = require('./queue');
 
 const sourceJobs = new Map();
+const queue = new Queue();
 
 const fetchPosts = async ({ sourceId, sourceUrl }) => {
   try {
@@ -61,13 +63,12 @@ const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
   });
 
   const sourceId = _id.toString();
-
   sourceJobs.set(sourceId, new CronJob(frequency, async () => { // eslint-disable-line
-    await fetchPosts({
+    queue.add(await fetchPosts({
       sourceId,
       sourceUrl,
-    });
-  }, null, true, 'Asia/Ho_Chi_Minh'));
+    }));
+  }, null, true, 'Asia/clearHo_Chi_Minh'));
 };
 
 const loadSourceJobs = async () => {
