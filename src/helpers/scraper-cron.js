@@ -7,7 +7,7 @@ const Post = require('./../post.model');
 const Queue = require('./queue');
 
 const sourceJobs = new Map();
-const queueJobs = new Queue();
+const queue = new Queue();
 
 const fetchPosts = async ({ sourceId, sourceUrl }) => {
   try {
@@ -64,11 +64,11 @@ const addSourceJob = async ({ _id, frequency, url: sourceUrl }) => {
 
   const sourceId = _id.toString();
   sourceJobs.set(sourceId, new CronJob(frequency, async () => { // eslint-disable-line
-    queueJobs.addFunction(await fetchPosts({
+    queue.add(await fetchPosts({
       sourceId,
       sourceUrl,
     }));
-  }, null, true, 'Asia/Ho_Chi_Minh'));
+  }, null, true, 'Asia/clearHo_Chi_Minh'));
 };
 
 const loadSourceJobs = async () => {

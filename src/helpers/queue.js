@@ -4,7 +4,7 @@ class Queue {
     this.queue = [];
   }
 
-  async addFunction(callback) {
+  async add(callback) {
     this.queue.push(async () => {
       await callback();
       this.next();
@@ -13,13 +13,12 @@ class Queue {
     if (!this.running) {
       this.next();
     }
-
-    return this;
   }
 
   next() {
     this.running = false;
     const shift = this.queue.shift();
+
     if (shift) {
       this.running = true;
       shift();
