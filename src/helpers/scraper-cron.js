@@ -2,8 +2,8 @@ const Fetch = require('node-fetch');
 const URL = require('url');
 const { CronJob } = require('cron');
 
-const Source = require('./../source.model.js');
-const Post = require('./../post.model.js');
+const Source = require('./../source.model');
+const Post = require('./../post.model');
 const Queue = require('./queue');
 
 const sourceJobs = new Map();
